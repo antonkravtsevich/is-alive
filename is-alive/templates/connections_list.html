@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>Соединения</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    </head>
+    <body>
+        <h1>Соединения</h1>
+        <table border="1px">
+            <tr>
+                <th> ID </th>
+                <th> Статус </th>
+                <th> Время с последней проверки </th>
+            </tr>
+            {% for connection in connections %}
+            <tr>
+                <td><a href="/connections/{{connection['uuid']}}">{{connection['uuid']}}</a></td>
+                <!--<td><font color={{connection['status_color']}}>{{connection['status']}}</font></td>-->
+                <td bgcolor={{connection['status_color']}}>{{connection['status']}}</td>
+                <td>{{connection['timediff']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>Соединения</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    </head>
+    <body>
+        <h1>{{connection['uuid']}}</h1>
+        <font color={{connection['status_color']}}>{{connection['status']}}</font>
+        <br>
+        <br>
+        <b>Прошло времени с последнией проверки: </b>{{connection['timediff']}}
+    </body>
+</html>
