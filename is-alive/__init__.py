@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, render_template
 import pyrebase
 import time
+from uuid import UUID
 import os
 
 config = {
@@ -11,8 +12,8 @@ config = {
     "serviceAccount": "./account.json"
 }
 
-SOFT_TIMELIMIT = 1 # if user was disconnected more then SOFT_TIMELIMIT minutes - status will be 'Connections problems'
-HARD_TIMELIMIT = 2 # if user was disconnected more then HARD_TIMELIMIT minutes - there is a high chance that internet is down
+SOFT_TIMELIMIT = 5 # if user was disconnected more then SOFT_TIMELIMIT minutes - status will be 'Connections problems'
+HARD_TIMELIMIT = 20 # if user was disconnected more then HARD_TIMELIMIT minutes - there is a high chance that internet is down
 
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
@@ -116,6 +117,13 @@ def add_new_check():
     if data.get('uuid', None) is None:
         return jsonify({'status': 'cant parse json'})
     uuid = data.get('uuid')
+
+    # validate uuid
+
+    try:
+        val = UUID(uuid, version=1)
+    except ValueError:
+        return jsonify({'status': 'incorrect uuid format'})
     
     payload = {
         'last_check': time.time(),
